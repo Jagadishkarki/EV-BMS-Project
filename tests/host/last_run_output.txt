@@ -1,0 +1,84 @@
+######## Suite A: Tasks 1, 4, 5(queue), 6(risk) ########
+
+  PASS: starts NORMAL
+  PASS: fault -> DEGRADED
+  PASS: fault source/id isolated and retained
+  PASS: clear before min dwell stays DEGRADED (anti-cycling)
+  PASS: clear after min dwell -> NORMAL
+  PASS: fault source cleared on recovery
+
+  PASS: persistent fault -> FAILSAFE
+  PASS: entering FAILSAFE is not itself a strike
+  PASS: after hold still FAILSAFE (verifying, not instant NORMAL)
+  PASS: verification passed -> NORMAL
+
+  PASS: fault mid-verification prevents early NORMAL
+
+  PASS: escalated to FAILSAFE
+  PASS: fault that merely persists is NOT a strike
+  PASS: repeated failed recoveries -> SHUTDOWN
+  PASS: SHUTDOWN does not auto-exit
+  PASS: explicit reset() -> NORMAL (deadlock-free)
+  PASS: reset() outside SHUTDOWN is a no-op
+  PASS: log records previous/new state
+  PASS: every transition logged
+
+[FaultManager] frozen ADC / relay mismatch / comm timeout
+  PASS: frozen ADC ch1 detected (id 101)
+  PASS: ADC fault clears when value moves
+  PASS: relay mismatch detected
+  PASS: comm timeout detected
+  PASS: priority: CELL outranks COMM when both active
+
+[OfflineQueue] FIFO order + overflow policy
+  PASS: events dequeue in insertion order
+  PASS: count capped at fixed capacity
+  PASS: 6 oldest dropped on overflow
+  PASS: oldest surviving event is #6 (newest data kept)
+
+[BMSEngine] weakest/strongest, imbalance, adaptive threshold, trend
+  PASS: weakest cell identified
+  PASS: strongest cell identified
+  PASS: imbalance = max-min (3.73-3.55)
+  PASS: threshold tightens near full SoC
+  PASS: threshold relaxes under heavy discharge current
+  PASS: widening imbalance -> trend +1
+  PASS: narrowing imbalance -> trend -1
+
+[RiskEngine] score & severity track FSM state
+  PASS: healthy pack -> OK, low score
+  PASS: FAILSAFE+CELL -> CRITICAL, cell-specific suggestion
+  PASS: SHUTDOWN -> CRITICAL, shutdown suggestion
+  PASS: DEGRADED -> WARNING
+  PASS: worse imbalance/faults/SoC -> higher score
+
+==== 40 passed, 0 failed ====
+
+######## Suite B: Task 2 (SensorMonitor, SafetyRelay) ########
+
+[SensorMonitor]
+  PASS: out-of-range flagged
+  PASS: out-of-range sample rejected (last good value returned)
+  PASS: physically impossible jump flagged
+  PASS: frozen sensor flagged after SENSOR_FROZEN_WINDOW_MS
+  PASS: single outlier is NOT a hardware fault
+  PASS: single outlier filtered (window mean used, not the spike)
+  PASS: sustained step is not a fault
+  PASS: sustained step accepted as genuine load change
+
+[SafetyRelay]
+  PASS: starts NORMAL, relay closed
+  PASS: overcurrent -> debounce, relay still closed
+  PASS: glitch shorter than debounce never trips relay (anti-chatter)
+  PASS: sustained overcurrent -> TRIPPED, relay OPEN
+  PASS: hysteresis: 23A (below trip, above reset) does NOT start recovery
+  PASS: below reset -> RECOVERY_HOLD, relay still open
+  PASS: re-fault during recovery prevents return to NORMAL
+  PASS: hold elapsed -> RECOVERY_VERIFY, relay still open
+  PASS: verify elapsed -> NORMAL, relay re-closed
+  PASS: transitions logged
+  PASS: sensor anomaly trips relay with correct reason
+  PASS: 20k-step fault-injection stress: state always valid
+  PASS: after stress, clean input always returns to NORMAL (no deadlock)
+
+==== Task 2: 21 passed, 0 failed ====
