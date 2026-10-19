@@ -1,0 +1,81 @@
+
+{
+  "version": 1,
+  "author": "Jagadish",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-lcd2004",
+      "id": "lcd1",
+      "top": 180,
+      "left": 250,
+      "attrs": { "pins": "i2c" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot1",
+      "top": -39,
+      "left": 307,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot2",
+      "top": -20,
+      "left": 450,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot3",
+      "top": 100,
+      "left": 450,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot4",
+      "top": 100,
+      "left": 300,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay1",
+      "top": -153,
+      "left": -67,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []],
+    ["lcd1:GND", "esp:GND.1", "black", []],
+    ["lcd1:VCC", "esp:5V", "red", []],
+    ["lcd1:SDA", "esp:21", "green", []],
+    ["lcd1:SCL", "esp:22", "blue", []],
+    ["pot1:VCC", "esp:3V3", "red", []],
+    ["pot1:GND", "esp:GND.1", "black", []],
+    ["pot1:SIG", "esp:32", "yellow", []],
+    ["pot2:VCC", "esp:3V3", "red", []],
+    ["pot2:GND", "esp:GND.1", "black", []],
+    ["pot2:SIG", "esp:33", "yellow", []],
+    ["pot3:VCC", "esp:3V3", "red", []],
+    ["pot3:GND", "esp:GND.1", "black", []],
+    ["pot3:SIG", "esp:34", "yellow", []],
+    ["pot4:VCC", "esp:3V3", "red", []],
+    ["pot4:GND", "esp:GND.1", "black", []],
+    ["pot4:SIG", "esp:35", "yellow", []],
+    ["relay1:VCC", "esp:5V", "red", []],
+    ["relay1:GND", "esp:GND.2", "black", []],
+    ["relay1:IN", "esp:26", "green", []]
+  ],
+  "dependencies": {}
+}

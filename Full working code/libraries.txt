@@ -1,0 +1,6 @@
+# Wokwi Library List
+# See https://docs.wokwi.com/guides/libraries
+
+Blynk
+LiquidCrystal_I2C
+BlynkESP32_BT_WF
